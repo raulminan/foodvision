@@ -126,7 +126,8 @@ def train(
     optimizer: torch.optim.Optimizer,
     loss_fn: torch.nn.Module,
     epochs: int,
-    device: torch.device
+    device: torch.device,
+    writer: torch.utils.tensorboard.writer.SummaryWriter=None
 ) -> Dict[str, List]:
     
     """Trains and tests a PyTorch model.
@@ -151,6 +152,8 @@ def train(
         An integer indicating how many epochs to train for.
     device : torch.device
         A target device to compute on (e.g. "cuda" or "cpu").
+    writer : torch.utils.tensorboard.writer.SummaryWriter, optional
+        A writer to keep track of different experiments, by default None
 
     Returns
     -------
@@ -195,6 +198,22 @@ def train(
         results["train_loss"].append(train_loss)
         results["train_acc"].append(train_acc)
         results["test_loss"].append(test_loss)
-        results["test_acc"].append(test_acc)        
-    
+        results["test_acc"].append(test_acc)
+        
+        # If there is a writer, log to it
+        if writer is not None:
+            # Add results to SummaryWriter
+            writer.add_scalars(main_tag="Loss",
+                               tag_scalar_dict={"train_loss": train_loss,
+                                                "test_loss": test_loss},
+                               global_step_epoch=epoch) 
+            writer.add_scalars(main_tag="Accuracy",
+                               tag_scalar_dict={"train_acc": train_acc,
+                                                "test_acc": test_acc},
+                               global_step_epoch=epoch) 
+            # close writer
+            writer.close()
+        else:
+            pass
+        
     return results

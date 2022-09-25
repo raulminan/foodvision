@@ -53,7 +53,8 @@ def main():
                 loss_fn=loss_fn,
                 optimizer=optimizer,
                 epochs=NUM_EPOCHS,
-                device=device)
+                device=device,
+                writer=None)
 
     # save the model
     utils.save_model(model=model,
