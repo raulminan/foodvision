@@ -1,4 +1,4 @@
-from venv import create
+#!usr/bin/env python
 import gradio as gr
 import os
 import torch
