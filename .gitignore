@@ -130,3 +130,9 @@ dmypy.json
 
 # ignore pics 
 *.jpg
+
+# ignore zips
+*.zip
+
+# ignore demos-huggingface
+demos-huggingface/
